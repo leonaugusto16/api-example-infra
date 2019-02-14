@@ -1,0 +1,38 @@
+version: '3'
+
+services:
+  db:
+      image: mysql:8.0
+      command: --default-authentication-plugin=mysql_native_password
+      volumes:
+        - ./dump:/docker-entrypoint-initdb.d
+      restart: on-failure
+      environment:
+        MYSQL_DATABASE: notes
+        MYSQL_USER: notes-api
+        MYSQL_PASSWORD: notes-api
+        MYSQL_ROOT_PASSWORD: notes-api
+      healthcheck:
+        test: "/usr/bin/mysql --user=root --password=notes-api --execute \"SHOW DATABASES;\""
+        interval: 2s
+        timeout: 40s
+        retries: 20
+  app:
+      depends_on:
+        - db
+      build: nodejs
+      restart: on-failure
+      links:
+        - db
+  proxy: 
+    depends_on:
+        - app
+    image: nginx:1
+    volumes:
+      - ./ngnix/:/etc/nginx/conf.d/
+    restart: on-failure
+    links:
+      - app
+    ports:
+      - 80:80
+      
