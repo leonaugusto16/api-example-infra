@@ -1,0 +1,5 @@
+- hosts: remote
+  user: vagrant
+  gather_facts: false
+  tasks:
+    - ping:

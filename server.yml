@@ -1,0 +1,8 @@
+---
+- name: Configure API Server
+  hosts: remote
+
+  roles:
+    - git
+    - docker
+    - deploy
