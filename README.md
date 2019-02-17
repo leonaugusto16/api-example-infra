@@ -4,6 +4,9 @@ Automated infrastructure example project for local environments with Vagrant + D
 
 ## Environment execution 
 
+* Vagrant 2.2.3
+* Ansible 2.5.2
+
 ```
 vagrant up
 ansible-playbook --private-key=.vagrant/machines/default/<YOUR_PROVIDER>/private_key -i setup/hosts setup/server.yml
