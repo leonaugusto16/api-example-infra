@@ -61,14 +61,9 @@
         enabled: yes
       become: yes
 
-    - name: Add user vagrant to docker group
+    - name: Add user ansible to docker group
       user:
-        name: vagrant
+        name: "{{ ansible_user }}"
         groups: docker
         append: yes
-      become: yes
-
-    - name: Disabled SELinux
-      selinux:
-        state: disabled
       become: yes
