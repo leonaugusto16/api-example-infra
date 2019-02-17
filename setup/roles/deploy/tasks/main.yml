@@ -1,4 +1,30 @@
+- name: Pull image Mysql
+  docker_image:
+    name: mysql:8.0
+  become: yes
+
+- name: Pull image Nginx
+  docker_image:
+    name: nginx:1-alpine
+  become: yes
+
+- name: Pull image NodeJS
+  docker_image:
+    name: node:8-alpine
+  become: yes
+
 - name: Run docker-compose.yml
   docker_service:
     project_src: "{{ directory_project_docker }}"
+    state: present
+  register: output
   become: yes
+
+- debug:
+    var: output
+  
+- assert:
+    that:
+      - "proxy.docker_proxy_1.state.running"
+      - "app.docker_app_1.state.running"
+      - "db.docker_db_1.state.running"
