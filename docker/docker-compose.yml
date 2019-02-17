@@ -1,4 +1,4 @@
-version: '2'
+version: '2.1'
 
 services:
   db:
@@ -11,9 +11,15 @@ services:
         MYSQL_USER: notes-api
         MYSQL_PASSWORD: notes-api
         MYSQL_ROOT_PASSWORD: notes-api
+      healthcheck:
+        test: "mysql --user=root --password=notes-api --execute \"SHOW DATABASES;\""
+        interval: 5s
+        timeout: 200s
+        retries: 40
   app:
       depends_on:
-        - db
+        db:
+          condition: service_healthy
       build: nodejs
       links:
         - db
